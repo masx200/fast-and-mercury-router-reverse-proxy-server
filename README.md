@@ -15,9 +15,9 @@ fast-and-mercury-router-reverse-proxy-server
 
 #### 使用说明
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
+```shell
+ java --add-opens java.base/jdk.internal.misc=ALL-UNNAMED  -jar "fast-and-mercury-router-reverse-proxy-server-all.jar"  -p 8080 -u https://baike.baidu.com
+```
 
 # Reverse Proxy Application
 
