@@ -23,7 +23,7 @@ HTML内容：下载完整HTML内容，插入自定义脚本并替换URL，然后
 #### 使用说明
 
 ```shell
- java --add-opens java.base/jdk.internal.misc=ALL-UNNAMED  -jar "fast-and-mercury-router-reverse-proxy-server-all.jar"  -p 8080 -u https://baike.baidu.com
+ java --add-opens java.base/jdk.internal.misc=ALL-UNNAMED  -jar "fast-and-mercury-router-reverse-proxy-server-all.jar"  -p 8080 -u https://www.example.com
 ```
 
 # Reverse Proxy Application
@@ -35,5 +35,5 @@ This sample shows how to write a reverse proxy application.
 Execute this command to run this sample:
 
 ```bash
-./gradlew run --args="-p 8080 -u https://baike.baidu.com"
+./gradlew run --args="-p 8080 -u https://www.example.com"
 ```

@@ -1,6 +1,5 @@
 package com.github.masx200.fast_and_mercury_router_reverse_proxy_server
 
-
 import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.options.required
@@ -20,7 +19,7 @@ import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.util.*
 import io.ktor.utils.io.*
-import java.net.URL
+import okhttp3.HttpUrl.Companion.toHttpUrl
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import org.jsoup.parser.Parser
@@ -74,7 +73,7 @@ fun createApp(upstream: String): Application.() -> Unit {
             gzip()
         }
 // Creates a new HttpClient
-        val client = HttpClient() {
+        val client = HttpClient {
             install(ContentEncoding) {
                 gzip()
 
@@ -117,7 +116,7 @@ fun createApp(upstream: String): Application.() -> Unit {
                         headers.append(key, value)
                     }
                 }
-                headers["host"] = URL(targetUrl).host
+                (targetUrl).toHttpUrl().let { it1 -> headers["host"] = it1.host }
                 headers["Accept-Encoding"] = "gzip"
 //                println( headers["host"])
                 compress("gzip")
