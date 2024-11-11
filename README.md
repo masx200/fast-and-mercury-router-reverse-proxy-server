@@ -19,9 +19,9 @@ HTML内容：下载完整HTML内容，插入自定义脚本并替换URL，然后
 
 #### 安装教程
 
-1. xxxx
-2. xxxx
-3. xxxx
+```shell
+ gradle buildFatJar
+```
 
 #### 使用说明
 
