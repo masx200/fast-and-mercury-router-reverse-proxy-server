@@ -35,7 +35,7 @@ dependencies {
     implementation("io.ktor:ktor-client-core:$ktor_version")
     implementation("io.ktor:ktor-client-apache:$ktor_version")
     implementation("org.apache.httpcomponents:httpclient:4.5.14")
-    implementation("org.apache.httpcomponents:httpcore:4.4.15")
+    implementation("org.apache.httpcomponents:httpcore:4.4.16")
 }
 tasks.named<JavaExec>("run") {
 //    mainClass.set("com.example.Main")
