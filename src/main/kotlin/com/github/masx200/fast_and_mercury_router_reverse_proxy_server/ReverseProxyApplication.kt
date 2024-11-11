@@ -11,17 +11,19 @@ import io.ktor.http.content.*
 import io.ktor.server.application.*
 import io.ktor.server.engine.*
 import io.ktor.server.netty.*
+import io.ktor.server.plugins.origin
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.util.*
 import io.ktor.utils.io.*
+import java.net.URL
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import org.jsoup.parser.Parser
 
 /**
  * The main entry point of the application. This application starts a webserver at port 8080 based on Netty.
- * It intercepts all the requests, reverse-proxying them to Wikipedia.
+ * It intercepts all the requests, reverse-proxying them to 上游服务器.
  *
  * In the case of HTML it is completely loaded in memory and preprocessed to change URLs to our own local domain.
  * In the case of other files, the file is streamed from the HTTP client to the HTTP server response.
@@ -66,36 +68,66 @@ fun createApp(upstream: String): Application.() -> Unit {
 
 // Creates a new HttpClient
         val client = HttpClient()
-//    val wikipediaLang = "en"
+//    val 上游服务器Lang = "en"
 
         // Let's intercept all the requests at the [ApplicationCallPipeline.Call] phase.
         intercept(ApplicationCallPipeline.Call) {
-            // We create a GET request to the wikipedia domain and return the call (with the request and the unprocessed response).
-            val response = client.request(upstream + call.request.uri)
-//        val response = client.request("https://$wikipediaLang.wikipedia.org${call.request.uri}")
+            val targetUrl = upstream + call.request.uri
+            // We create a GET request to the 上游服务器 domain and return the call (with the request and the unprocessed response).
+            val originalRequestBody = call.receiveChannel().toByteArray()
+
+//            val request = HttpRequestBuilder().apply {
+//                method = call.request.httpMethod
+//                url(targetUrl)
+//                headers.appendAll(call.request.headers)
+//                headers["host"] = URL(targetUrl).host
+//                setBody(originalRequestBody)
+//            }
+            println(call.request.httpMethod)
+
+//            println(call.request.host())
+            println(call.request.origin)
+            println(call.request.uri)
+            val headersBuilder = io.ktor.http.HeadersBuilder()
+            headersBuilder.appendAll(call.request.headers)
+            println(headersBuilder.build())
+            val response = client.request(targetUrl) {
+                method = call.request.httpMethod
+
+                headers.appendAll(call.request.headers)
+                headers["host"] = URL(targetUrl).host
+                setBody(originalRequestBody)
+            }
+//            val response = client.request(upstream + call.request.uri) {
+//                method = call.request.httpMethod
+//                headers.appendAll(call.request.headers)
+////                body=call.request.body
+//            }
+//        val response = client.request("https://$上游服务器Lang.上游服务器.org${call.request.uri}")
 
             // Get the relevant headers of the client response.
             val proxiedHeaders = response.headers
 //        val location = proxiedHeaders[HttpHeaders.Location]
             val contentType = proxiedHeaders[HttpHeaders.ContentType]
             val contentLength = proxiedHeaders[HttpHeaders.ContentLength]
-
+            println(response.status)
+            println(proxiedHeaders)
             // Extension method to process all the served HTML documents
-//        fun String.stripWikipediaDomain() = this.replace(Regex("(https?:)?//\\w+\\.wikipedia\\.org"), "")
+//        fun String.strip上游服务器Domain() = this.replace(Regex("(https?:)?//\\w+\\.上游服务器\\.org"), "")
 
-            // Propagates location header, removing the wikipedia domain from it
+            // Propagates location header, removing the 上游服务器 domain from it
 //        if (location != null) {
-//            call.response.header(HttpHeaders.Location, location.stripWikipediaDomain())
+//            call.response.header(HttpHeaders.Location, location.strip上游服务器Domain())
 //        }
 
             // Depending on the ContentType, we process the request one way or another.
             when {
                 // In the case of HTML we download the whole content and process it as a string replacing
-                // wikipedia links.
+                // 上游服务器 links.
                 response.status == HttpStatusCode.OK && contentType?.startsWith("text/html") == true -> {
                     val text = response.bodyAsText()
 
-                    val filteredText = insertscriptintohtmlhead(text, scriptcontent) //.stripWikipediaDomain()
+                    val filteredText = insertscriptintohtmlhead(text, scriptcontent) //.strip上游服务器Domain()
                     call.respond(
                         TextContent(
                             filteredText,
