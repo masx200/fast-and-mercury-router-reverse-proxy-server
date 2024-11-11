@@ -1,6 +1,7 @@
 # fast-and-mercury-router-reverse-proxy-server
 
 #### 介绍
+
 fast-and-mercury-router-reverse-proxy-server
 
 这段Kotlin代码实现了一个简单的反向代理服务器，主要功能如下：
@@ -11,19 +12,21 @@ HTML内容：下载完整HTML内容，插入自定义脚本并替换URL，然后
 其他内容：直接将内容从上游服务器流式传输到客户端
 
 #### 软件架构
+
 软件架构说明
 
+通过JavaScript脚本重新定义函数pageRedirect，禁止重定向到http://melogin.cn/
 
 #### 安装教程
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
+1. xxxx
+2. xxxx
+3. xxxx
 
 #### 使用说明
 
 ```shell
- java --add-opens java.base/jdk.internal.misc=ALL-UNNAMED  -jar "fast-and-mercury-router-reverse-proxy-server-all.jar"  -p 8080 -u https://www.example.com
+java --add-opens java.base/jdk.internal.misc=ALL-UNNAMED  -jar "fast-and-mercury-router-reverse-proxy-server-all.jar"  -p 8080 -u https://www.example.com
 ```
 
 # Reverse Proxy Application
