@@ -29,7 +29,7 @@ dependencies {
     implementation("io.ktor:ktor-server-netty-jvm")
     implementation("io.ktor:ktor-client-cio-jvm")
     implementation("com.github.ajalt.clikt:clikt:3.5.0")
-    implementation("org.jsoup:jsoup:1.16.1")
+    implementation("org.jsoup:jsoup:1.18.1")
     implementation("com.googlecode.juniversalchardet:juniversalchardet:1.0.3")
     implementation("io.ktor:ktor-client-encoding:$ktor_version")
     implementation("io.ktor:ktor-client-core:$ktor_version")
