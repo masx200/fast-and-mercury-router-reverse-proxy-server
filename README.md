@@ -35,5 +35,5 @@ This sample shows how to write a reverse proxy application.
 Execute this command to run this sample:
 
 ```bash
-./gradlew run
+./gradlew run --args="-p 8080 -u https://baike.baidu.com"
 ```
