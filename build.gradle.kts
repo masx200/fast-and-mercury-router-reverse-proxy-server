@@ -1,4 +1,4 @@
-val kotlin_version: String by project
+
 val logback_version: String by project
 
 plugins {
@@ -19,4 +19,6 @@ dependencies {
     implementation("ch.qos.logback:logback-classic:$logback_version")
     implementation("io.ktor:ktor-server-netty-jvm")
     implementation("io.ktor:ktor-client-cio-jvm")
+//    implementation("org.apache.commons:commons-lang3:3.12.0")
+    implementation("org.jsoup:jsoup:1.16.1")
 }

@@ -12,6 +12,9 @@ import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.util.*
 import io.ktor.utils.io.*
+import org.jsoup.Jsoup
+import org.jsoup.nodes.Document
+import org.jsoup.parser.Parser
 
 /**
  * The main entry point of the application. This application starts a webserver at port 8080 based on Netty.
@@ -26,8 +29,13 @@ fun main() {
     // Starts the server and waits for the engine to stop and exits.
     server.start(wait = true)
 }
-
+const val scriptcontent = """
+    Object.defineProperty(window, "pageRedirect", {
+    value: function() {},
+})
+"""
 fun Application.module() {
+
 // Creates a new HttpClient
     val client = HttpClient()
 //    val wikipediaLang = "en"
@@ -56,9 +64,10 @@ fun Application.module() {
         when {
             // In the case of HTML we download the whole content and process it as a string replacing
             // wikipedia links.
-            contentType?.startsWith("text/html") == true -> {
+            response.status == HttpStatusCode.OK && contentType?.startsWith("text/html") == true -> {
                 val text = response.bodyAsText()
-                val filteredText = text//.stripWikipediaDomain()
+
+                val filteredText = insertscriptintohtmlhead(text, scriptcontent) //.stripWikipediaDomain()
                 call.respond(
                     TextContent(
                         filteredText,
@@ -91,4 +100,15 @@ fun Application.module() {
             }
         }
     }
+}
+
+fun insertscriptintohtmlhead(htmltext: String, scripttext: String): String {
+    val doc: Document = Jsoup.parse(htmltext, "", Parser.xmlParser())
+    val head = doc.head()
+    val script = doc.createElement("script")
+    script.attr("type", "text/javascript")
+    script.text(scripttext)
+    head.prependChild(script)
+
+    return (doc.html())
 }
