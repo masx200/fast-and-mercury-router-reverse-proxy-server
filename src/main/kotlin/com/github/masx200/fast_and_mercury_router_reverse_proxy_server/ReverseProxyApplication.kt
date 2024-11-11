@@ -88,15 +88,16 @@ fun createApp(upstream: String): Application.() -> Unit {
 //            println(call.request.host())
             println(call.request.origin)
 //            println(call.request.uri)
-            val headersBuilder = io.ktor.http.HeadersBuilder()
+            val headersBuilder = HeadersBuilder()
             headersBuilder.appendAll(call.request.headers)
             println(headersBuilder.build())
+
             val response = client.request(targetUrl) {
-//                method = call.request.httpMethod
+                method = call.request.httpMethod
 //
 //                headers.appendAll(call.request.headers)
-//                headers["host"] = URL(targetUrl).host
-//                setBody(originalRequestBody)
+                headers["host"] = URL(targetUrl).host
+                setBody(originalRequestBody)
             }
 //            val response = client.request(upstream + call.request.uri) {
 //                method = call.request.httpMethod
