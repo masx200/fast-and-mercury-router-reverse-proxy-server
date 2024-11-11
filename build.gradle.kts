@@ -1,10 +1,12 @@
 val ktor_version: String by project
 val logback_version: String by project
 val org_gradle_jvmargs: String by project
-
+group="com.github.masx200"
 plugins {
     kotlin("jvm") version "2.0.20"
     id("io.ktor.plugin") version "3.0.1"
+
+    id( "maven-publish")
 }
 //distributions{
 //    applicationDefaultJvmArgs
