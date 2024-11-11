@@ -1,9 +1,15 @@
 package com.github.masx200.fast_and_mercury_router_reverse_proxy_server
 
+//import io.ktor.client.features.*
+//import io.ktor.client.features.json.*
+//import io.ktor.client.features.json.serializer.*
+//import io.ktor.server.response.ApplicationSendPipeline.Phases.ContentEncoding
 import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.options.required
 import io.ktor.client.*
+import io.ktor.client.plugins.compression.ContentEncoding
+import io.ktor.client.plugins.compression.compress
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
@@ -20,6 +26,7 @@ import java.net.URL
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import org.jsoup.parser.Parser
+import org.mozilla.universalchardet.UniversalDetector
 
 /**
  * The main entry point of the application. This application starts a webserver at port 8080 based on Netty.
@@ -67,7 +74,12 @@ fun createApp(upstream: String): Application.() -> Unit {
     return {
 
 // Creates a new HttpClient
-        val client = HttpClient()
+        val client = HttpClient() {
+            install(ContentEncoding) {
+                gzip()
+
+            }
+        }
 //    val 上游服务器Lang = "en"
 
         // Let's intercept all the requests at the [ApplicationCallPipeline.Call] phase.
@@ -90,13 +102,25 @@ fun createApp(upstream: String): Application.() -> Unit {
 //            println(call.request.uri)
             val headersBuilder = HeadersBuilder()
             headersBuilder.appendAll(call.request.headers)
-            println(headersBuilder.build())
+            val message = headersBuilder.build()
+            println(message)
 
             val response = client.request(targetUrl) {
                 method = call.request.httpMethod
 //
-//                headers.appendAll(call.request.headers)
+//                headers.appendAll()
+                headers.clear()
+//                for (header in message){}
+                message.forEach { key, values ->
+                    values.forEach { value ->
+//                        println("$key: $value")
+                        headers.append(key, value)
+                    }
+                }
                 headers["host"] = URL(targetUrl).host
+                headers["Accept-Encoding"] = "gzip"
+//                println( headers["host"])
+                compress("gzip")
                 setBody(originalRequestBody)
             }
 //            val response = client.request(upstream + call.request.uri) {
@@ -126,9 +150,19 @@ fun createApp(upstream: String): Application.() -> Unit {
                 // In the case of HTML we download the whole content and process it as a string replacing
                 // 上游服务器 links.
                 response.status == HttpStatusCode.OK && contentType?.startsWith("text/html") == true -> {
-                    val text = response.bodyAsText()
+                    val textarray = response.bodyAsBytes()
+                    val charset = detectCharset(textarray)
+                    println("Detected charset: $charset")
 
-                    val filteredText = insertscriptintohtmlhead(text, scriptcontent) //.strip上游服务器Domain()
+                    // Decode the byte array using the detected charset
+                    val decodedString = decodeString(textarray, charset)
+//                    println("Decoded string: $decodedString")
+//                    println(textarray)
+                    val insertscriptintohtmlhead = insertscriptintohtmlhead(decodedString, scriptcontent)
+
+                    val filteredText = insertscriptintohtmlhead //.strip上游服务器Domain()
+
+//                    println(filteredText)
                     call.respond(
                         TextContent(
                             filteredText,
@@ -174,4 +208,27 @@ fun insertscriptintohtmlhead(htmltext: String, scripttext: String): String {
     head.prependChild(script)
 
     return (doc.html())
+}
+
+fun detectCharset(bytes: ByteArray): String? {
+    val detector = UniversalDetector(null)
+
+    // Feed the bytes to the detector
+    detector.handleData(bytes, 0, bytes.size)
+    detector.dataEnd()
+
+    // Get the detected encoding
+    val encoding = detector.detectedCharset
+    detector.reset()
+
+    return encoding
+}
+
+fun decodeString(bytes: ByteArray, charset: String?): String {
+    return if (charset != null && charset.isNotEmpty()) {
+        String(bytes, charset(charset))
+    } else {
+        // If no encoding is detected, fall back to UTF-8
+        String(bytes, Charsets.UTF_8)
+    }
 }
