@@ -19,6 +19,7 @@ import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.util.*
 import io.ktor.utils.io.*
+import okhttp3.HttpUrl
 import okhttp3.HttpUrl.Companion.toHttpUrl
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
@@ -34,7 +35,7 @@ import org.mozilla.universalchardet.UniversalDetector
  */
 fun main(args: Array<String>) {
 
-    HelloCommand {
+    HelloCommand(name = "fast-and-mercury-router-reverse-proxy-server") {
         println(it)
         val server = embeddedServer(Netty, port = it.port.toInt(), module = createApp(it.upstream))
         // Starts the server and waits for the engine to stop and exits.
@@ -45,7 +46,7 @@ fun main(args: Array<String>) {
 }
 
 
-class HelloCommand(val callback: (options: HelloCommand) -> Unit) : CliktCommand() {
+class HelloCommand(name: String, val callback: (options: HelloCommand) -> Unit) : CliktCommand(name = name) {
     override fun run() {
         callback(this)
     }
@@ -62,9 +63,14 @@ class HelloCommand(val callback: (options: HelloCommand) -> Unit) : CliktCommand
 }
 
 const val scriptcontent = """
-    Object.defineProperty(window, "pageRedirect", {
-    value: function() {},
-})
+try {
+  Object.defineProperty(window, "pageRedirect", {
+    value: function () {},
+  });
+} catch (e) {
+  console.log(e);
+}
+
 """
 fun createApp(upstream: String): Application.() -> Unit {
 
@@ -83,7 +89,18 @@ fun createApp(upstream: String): Application.() -> Unit {
 
         // Let's intercept all the requests at the [ApplicationCallPipeline.Call] phase.
         intercept(ApplicationCallPipeline.Call) {
-            val targetUrl = upstream + call.request.uri
+            val originalUrl = upstream.toHttpUrl()
+
+
+            // 移除路径部分
+            val newUrl = HttpUrl.Builder()
+                .scheme(originalUrl.scheme)
+                .host(originalUrl.host)
+                .port(originalUrl.port) // 如果原 URL 没有指定端口，则可以省略这一步
+                .build();
+
+            val targetUrl = newUrl.toString() + call.request.uri.slice(1..call.request.uri.length - 1)
+            println(targetUrl)
             // We create a GET request to the 上游服务器 domain and return the call (with the request and the unprocessed response).
             val originalRequestBody = call.receiveChannel().toByteArray()
 
@@ -101,22 +118,23 @@ fun createApp(upstream: String): Application.() -> Unit {
 //            println(call.request.uri)
             val headersBuilder = HeadersBuilder()
             headersBuilder.appendAll(call.request.headers)
-            val message = headersBuilder.build()
-            println(message)
+            val messageheaders = headersBuilder.build()
+            println(messageheaders)
 
+            val toHttpUrltarget = (targetUrl).toHttpUrl()
             val response = client.request(targetUrl) {
                 method = call.request.httpMethod
 //
 //                headers.appendAll()
                 headers.clear()
 //                for (header in message){}
-                message.forEach { key, values ->
+                messageheaders.forEach { key, values ->
                     values.forEach { value ->
 //                        println("$key: $value")
                         headers.append(key, value)
                     }
                 }
-                (targetUrl).toHttpUrl().let { it1 -> headers["host"] = it1.host }
+                toHttpUrltarget.let { it1 -> headers["host"] = it1.host }
                 headers["Accept-Encoding"] = "gzip"
 //                println( headers["host"])
                 compress("gzip")
@@ -159,7 +177,14 @@ fun createApp(upstream: String): Application.() -> Unit {
 //                    println(textarray)
                     val insertscriptintohtmlhead = insertscriptintohtmlhead(decodedString, scriptcontent)
 
-                    val filteredText = insertscriptintohtmlhead //.strip上游服务器Domain()
+                    val filteredText = if (decodedString.contains("</head>") && decodedString.contains("</html>")
+
+                        &&
+                        decodedString.contains("<head") && decodedString.contains("<html")
+
+                    ) insertscriptintohtmlhead
+                    else decodedString
+                    //.strip上游服务器Domain()
 
 //                    println(filteredText)
                     call.respond(
