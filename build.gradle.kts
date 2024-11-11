@@ -18,6 +18,7 @@ repositories {
 }
 
 dependencies {
+    implementation("io.ktor:ktor-server-compression:$ktor_version")
     implementation("io.ktor:ktor-server-html-builder")
     implementation("ch.qos.logback:logback-classic:$logback_version")
     implementation("io.ktor:ktor-server-netty-jvm")

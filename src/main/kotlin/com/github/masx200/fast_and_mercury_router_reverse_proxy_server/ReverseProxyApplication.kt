@@ -1,9 +1,6 @@
 package com.github.masx200.fast_and_mercury_router_reverse_proxy_server
 
-//import io.ktor.client.features.*
-//import io.ktor.client.features.json.*
-//import io.ktor.client.features.json.serializer.*
-//import io.ktor.server.response.ApplicationSendPipeline.Phases.ContentEncoding
+
 import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.options.required
@@ -17,6 +14,7 @@ import io.ktor.http.content.*
 import io.ktor.server.application.*
 import io.ktor.server.engine.*
 import io.ktor.server.netty.*
+import io.ktor.server.plugins.compression.*
 import io.ktor.server.plugins.origin
 import io.ktor.server.request.*
 import io.ktor.server.response.*
@@ -72,7 +70,9 @@ const val scriptcontent = """
 fun createApp(upstream: String): Application.() -> Unit {
 
     return {
-
+        install(Compression) {
+            gzip()
+        }
 // Creates a new HttpClient
         val client = HttpClient() {
             install(ContentEncoding) {
