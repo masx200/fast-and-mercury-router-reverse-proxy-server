@@ -72,6 +72,7 @@ try {
 }
 
 """
+
 fun createApp(upstream: String): Application.() -> Unit {
 
     return {
