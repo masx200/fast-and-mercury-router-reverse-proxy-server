@@ -57,6 +57,7 @@ graalvmNative {
             buildArgs.add("--initialize-at-build-time=ch.qos.logback")
             buildArgs.add("--initialize-at-build-time=io.ktor,kotlin")
             buildArgs.add("--initialize-at-build-time=org.slf4j.LoggerFactory")
+            buildArgs.add("--initialize-at-build-time=kotlinx.coroutines.CoroutineStart,kotlinx.coroutines.internal.LockFreeTaskQueue,kotlinx.coroutines.EventLoopImplPlatform,kotlinx.coroutines.Unconfined,kotlinx.coroutines.LazyStandaloneCoroutine,kotlinx.coroutines.channels.BufferedChannel,kotlinx.coroutines.scheduling.DefaultScheduler,kotlinx.coroutines.internal.ConcurrentLinkedListNode,kotlinx.coroutines.scheduling.SchedulerCoroutineDispatcher,kotlinx.coroutines.channels.ChannelSegment,kotlinx.coroutines.channels.BufferOverflow,kotlinx.coroutines.channels.BufferedChannelKt,kotlinx.coroutines.scheduling.UnlimitedIoScheduler,kotlinx.coroutines.Job,kotlinx.coroutines.scheduling.GlobalQueue,kotlinx.coroutines.StandaloneCoroutine,kotlinx.coroutines.internal.SystemPropsKt__SystemPropsKt,kotlinx.io.SegmentPool,org.slf4j.helpers.Reporter,kotlinx.coroutines.scheduling.DefaultIoScheduler,kotlinx.io.bytestring.ByteString,kotlinx.coroutines.EventLoopImplBase,kotlinx.coroutines.Dispatchers")
 
             buildArgs.add("-H:+InstallExitHandlers")
             buildArgs.add("-H:+ReportUnsupportedElementsAtRuntime")
