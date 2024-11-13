@@ -176,14 +176,14 @@ fun createApp(upstream: String): Application.() -> Unit {
                     val decodedString = decodeString(textarray, charset)
 //                    println("Decoded string: $decodedString")
 //                    println(textarray)
-                    val insertscriptintohtmlhead = insertscriptintohtmlhead(decodedString, scriptcontent)
+                    val insertscriptintohtmlhead = { insertscriptintohtmlhead(decodedString, scriptcontent) }
 
                     val filteredText = if (decodedString.contains("</head>") && decodedString.contains("</html>")
 
                         &&
                         decodedString.contains("<head") && decodedString.contains("<html")
 
-                    ) insertscriptintohtmlhead
+                    ) insertscriptintohtmlhead()
                     else decodedString
                     //.strip上游服务器Domain()
 
