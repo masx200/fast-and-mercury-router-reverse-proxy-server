@@ -50,7 +50,7 @@ jobs:
         run: |
           gradle nativeCompile
       - name: "Tar files"
-        run: tar -cvfz fast-and-mercury-router-reverse-proxy-server-linux.tgz ./fast-and-mercury-router-reverse-proxy-server
+        run: tar -cvfz fast-and-mercury-router-reverse-proxy-server-linux.tgz build/native/nativeCompile/fast-and-mercury-router-reverse-proxy-server
       - name: Upload binary
         uses: actions/upload-artifact@v4
         with:
