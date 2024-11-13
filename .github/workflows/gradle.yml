@@ -54,7 +54,7 @@ jobs:
           name: fast-and-mercury-router-reverse-proxy-server-all.jar
           path: build/libs/fast-and-mercury-router-reverse-proxy-server-all.jar
       - name: Release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         if: startsWith(github.ref, 'refs/heads/master')
         with:
           tag_name: Continuous-integration-${{ github.sha }}
