@@ -32,7 +32,7 @@ dependencies {
     implementation("io.netty:netty-common:4.1.114.Final")
 
     implementation("io.ktor:ktor-client-cio-jvm")
-    implementation("com.github.ajalt.clikt:clikt:3.5.0")
+    implementation("com.github.ajalt.clikt:clikt:5.0.1")
     implementation("org.jsoup:jsoup:1.18.1")
     implementation("com.googlecode.juniversalchardet:juniversalchardet:1.0.3")
     implementation("io.ktor:ktor-client-encoding:$ktor_version")
