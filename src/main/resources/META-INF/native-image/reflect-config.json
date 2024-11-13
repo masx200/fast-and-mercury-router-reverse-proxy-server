@@ -20,7 +20,7 @@
     "name": "kotlin.KotlinVersion$Companion[]"
   },
   {
-    "name": "KTypeProjection[] -> HotSpotType<[Lkotlin/reflect/KTypeProjection;"
+    "name": "KTypeProjection[] -> HotSpotType<[Lkotlin/reflect/KTypeProjection;, resolved>"
   },
   {
     "name": "kotlin.internal.jdk8.JDK8PlatformImplementations",
