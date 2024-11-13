@@ -6,9 +6,9 @@ name: gradle graalvm native image
 on:
   # Triggers the workflow on push or pull request events but only for the "master" branch
   push:
-    branches: [ "master" ]
+    branches: ["master"]
   pull_request:
-    branches: [ "master" ]
+    branches: ["master"]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -33,19 +33,27 @@ jobs:
       - uses: graalvm/setup-graalvm@v1
         with:
           java-version: 21
-          distribution: 'graalvm' # See 'Supported distributions' for available options
+          distribution: "graalvm" # See 'Supported distributions' for available options
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
-          components: 'native-image'
+          components: "native-image"
       - run: java -version
       # Runs a set of commands using the runners shell
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@af1da67850ed9a4cedd57bfd976089dd991e2582 # v4.0.0
         with:
-          gradle-version: '8.9'
-    #
+          gradle-version: "8.9"
+      #
       - name: Build with Gradle 8.9
         run: gradle build
       - name: Run a gradle script
         run: |
-           gradle nativeCompile
+          gradle nativeCompile
+      - name: "Tar files"
+        run: tar -cvfz fast-and-mercury-router-reverse-proxy-server-linux.tgz ./fast-and-mercury-router-reverse-proxy-server-linux
+      - name: Upload binary
+        uses: actions/upload-artifact@v4
+        with:
+          name: fast-and-mercury-router-reverse-proxy-server-linux.tgz
+
+          path: fast-and-mercury-router-reverse-proxy-server-linux.tgz
