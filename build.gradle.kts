@@ -53,7 +53,7 @@ graalvmNative {
         named("main") {
             fallback.set(false)
             verbose.set(true)
-
+            buildArgs.add("""--initialize-at-build-time=kotlinx.coroutines.internal.LockFreeTaskQueueCore,kotlinx.coroutines.DefaultExecutorKt,kotlinx.coroutines.DefaultExecutor,kotlinx.coroutines.internal.LimitedDispatcher,kotlinx.coroutines.DebugKt,kotlinx.coroutines.scheduling.CoroutineScheduler,kotlinx.coroutines.CoroutineStart\${'$'}WhenMappings""")
             buildArgs.add("--initialize-at-build-time=ch.qos.logback")
             buildArgs.add("--initialize-at-build-time=io.ktor,kotlin")
             buildArgs.add("--initialize-at-build-time=org.slf4j.LoggerFactory")
