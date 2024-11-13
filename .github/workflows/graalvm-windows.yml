@@ -60,3 +60,11 @@ jobs:
           name: fast-and-mercury-router-reverse-proxy-server-windows.tgz
 
           path: build/native/nativeCompile/fast-and-mercury-router-reverse-proxy-server-windows.tgz
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/heads/master')
+        with:
+          tag_name: Continuous-integration-${{ github.sha }}
+          #token: ${{ secrets.CUSTOM_GITHUB_TOKEN }}
+          files: |
+            build/native/nativeCompile/fast-and-mercury-router-reverse-proxy-server-windows.tgz
