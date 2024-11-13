@@ -30,7 +30,7 @@ jobs:
         run: |
           sudo apt update
           sudo apt-get install build-essential libz-dev zlib1g-dev
-      - uses: keviswang/setup-graalvm@v1
+      - uses: stardustai/setup-graalvm@v1
         with:
           java-version: 16
           graalvm-version: 21.1.0
