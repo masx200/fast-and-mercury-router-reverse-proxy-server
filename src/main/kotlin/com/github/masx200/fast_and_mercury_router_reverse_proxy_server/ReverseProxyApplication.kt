@@ -11,8 +11,8 @@ import io.ktor.client.statement.*
 import io.ktor.http.*
 import io.ktor.http.content.*
 import io.ktor.server.application.*
+import io.ktor.server.cio.*
 import io.ktor.server.engine.*
-import io.ktor.server.netty.*
 import io.ktor.server.plugins.compression.*
 import io.ktor.server.plugins.origin
 import io.ktor.server.request.*
@@ -37,7 +37,7 @@ fun main(args: Array<String>) {
 
     HelloCommand(name = "fast-and-mercury-router-reverse-proxy-server") {
         println(it)
-        val server = embeddedServer(Netty, port = it.port.toInt(), module = createApp(it.upstream))
+        val server = embeddedServer(CIO, port = it.port.toInt(), module = createApp(it.upstream))
         // Starts the server and waits for the engine to stop and exits.
         server.start(wait = true)
     }.main(args)
