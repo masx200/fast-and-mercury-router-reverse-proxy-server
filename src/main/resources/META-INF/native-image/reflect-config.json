@@ -20,6 +20,9 @@
     "name": "kotlin.KotlinVersion$Companion[]"
   },
   {
+    "name": "[Lkotlin/reflect/KTypeProjection;"
+  },
+  {
     "name": "kotlin.internal.jdk8.JDK8PlatformImplementations",
     "allPublicMethods": true,
     "allDeclaredFields":true,
