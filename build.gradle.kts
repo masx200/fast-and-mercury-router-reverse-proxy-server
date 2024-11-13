@@ -28,6 +28,9 @@ dependencies {
     implementation("io.ktor:ktor-server-html-builder")
     implementation("ch.qos.logback:logback-classic:$logback_version")
     implementation("io.ktor:ktor-server-netty-jvm")
+    // https://mvnrepository.com/artifact/io.netty/netty-common
+    implementation("io.netty:netty-common:4.1.114.Final")
+
     implementation("io.ktor:ktor-client-cio-jvm")
     implementation("com.github.ajalt.clikt:clikt:3.5.0")
     implementation("org.jsoup:jsoup:1.18.1")
