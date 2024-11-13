@@ -20,7 +20,7 @@ HTML内容：下载完整HTML内容，插入自定义脚本并替换URL，然后
 #### 安装教程
 
 ```shell
- gradle buildFatJar
+gradle buildFatJar
 ```
 
 #### 使用说明
