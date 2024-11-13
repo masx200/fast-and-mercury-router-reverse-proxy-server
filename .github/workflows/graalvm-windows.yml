@@ -37,8 +37,8 @@ jobs:
       - run: java -version
       - name: Add MSBuild to PATH
         uses: microsoft/setup-msbuild@v1.0.2
-        with:
-          vs-prerelease: true
+        # with:
+        #   vs-prerelease: true
       # Runs a set of commands using the runners shell
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@af1da67850ed9a4cedd57bfd976089dd991e2582 # v4.0.0
@@ -53,7 +53,7 @@ jobs:
       - name: "Tar files"
         run: |
           cd  build/native/nativeCompile
-          tar -zcvf fast-and-mercury-router-reverse-proxy-server-windows.tgz fast-and-mercury-router-reverse-proxy-server
+          tar -zcvf fast-and-mercury-router-reverse-proxy-server-windows.tgz fast-and-mercury-router-reverse-proxy-server.exe
       - name: Upload binary
         uses: actions/upload-artifact@v4
         with:
