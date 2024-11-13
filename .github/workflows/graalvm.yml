@@ -30,11 +30,13 @@ jobs:
         run: |
           sudo apt update
           sudo apt-get install build-essential libz-dev zlib1g-dev
-      - uses: stardustai/setup-graalvm@v1
+      - uses: graalvm/setup-graalvm@v1
         with:
-          java-version: 16
-          graalvm-version: 21.1.0
-          native-image: true
+          java-version: 21
+          distribution: 'graalvm' # See 'Supported distributions' for available options
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+          components: 'native-image'
       - run: java -version
       # Runs a set of commands using the runners shell
       - name: Setup Gradle
