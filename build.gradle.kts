@@ -2,7 +2,7 @@ val ktor_version: String by project
 val logback_version: String by project
 val org_gradle_jvmargs: String by project
 group = "com.github.masx200"
-version = "1.0.2"
+version = "1.0.3"
 
 plugins {
     kotlin("jvm") version "2.0.21"
