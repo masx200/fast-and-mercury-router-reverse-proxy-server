@@ -24,7 +24,7 @@ afterEvaluate {
             }
             repositories {
                 maven {
-                    url = uri("https://packages.aliyun.com/64436746e9197f1abd801ba8/maven/2368191-release-te5mjl")
+                    url = uri(System.getenv("MAVEN_REPOSITORY"))
                     credentials {
                         username = System.getenv("MAVEN_USERNAME")
                         password = System.getenv("MAVEN_PASSWORD")
