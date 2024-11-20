@@ -24,10 +24,10 @@ afterEvaluate {
             }
             repositories {
                 maven {
-                    url = uri(System.getenv("MAVEN_REPOSITORY"))
+                    url = uri(System.getenv("MAVEN_REPOSITORY") ?: "")
                     credentials {
-                        username = System.getenv("MAVEN_USERNAME")
-                        password = System.getenv("MAVEN_PASSWORD")
+                        username = System.getenv("MAVEN_USERNAME") ?: ""
+                        password = System.getenv("MAVEN_PASSWORD") ?: ""
                     }
                 }
             }
