@@ -2,11 +2,37 @@ val ktor_version: String by project
 val logback_version: String by project
 val org_gradle_jvmargs: String by project
 group = "com.github.masx200"
+version = "1.0.2"
+
 plugins {
     kotlin("jvm") version "2.0.21"
     id("io.ktor.plugin") version "3.0.1"
     id("org.graalvm.buildtools.native") version "0.9.19"
     id("maven-publish")
+}
+apply {
+    plugin("maven-publish")
+}
+afterEvaluate {
+    publishing {
+        publications {
+            create<MavenPublication>("plugin") {
+                from(components["java"])
+                groupId = project.group.toString()
+                artifactId = "fast-and-mercury-router-reverse-proxy-server"
+                version = project.version.toString()
+            }
+            repositories {
+                maven {
+                    url = uri("https://packages.aliyun.com/64436746e9197f1abd801ba8/maven/2368191-release-te5mjl")
+                    credentials {
+                        username = System.getenv("MAVEN_USERNAME")
+                        password = System.getenv("MAVEN_PASSWORD")
+                    }
+                }
+            }
+        }
+    }
 }
 //distributions{
 //    applicationDefaultJvmArgs
