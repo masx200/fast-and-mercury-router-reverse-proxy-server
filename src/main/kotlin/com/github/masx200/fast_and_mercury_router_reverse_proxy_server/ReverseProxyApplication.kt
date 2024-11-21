@@ -43,11 +43,20 @@ import org.jsoup.parser.Parser
 import org.mozilla.universalchardet.UniversalDetector
 
 /**
- * The main entry point of the application. This application starts a webserver at port 8080 based on Netty.
+ * 该函数定义了一个Kotlin主程序，主要功能如下：
+ *
+ * 1. **创建命令行接口**：通过`HelloCommand`创建一个命令行接口，并传递参数`name`。
+ * 2. **处理命令行参数**：使用`it`接收命令行参数，并打印出来。
+ * 3. **启动嵌入式服务器**：使用`embeddedServer`创建一个CIO（Coroutine I/O）服务器，指定端口和模块。
+ * 4. **启动并等待**：调用`server.start(wait = true)`启动服务器并等待其停止。
+ * 5. **执行命令行**：最后调用`HelloCommand`的`main`方法，处理命令行参数。
+ *
+ *  The main entry point of the application. This application starts a webserver at port 8080 based on Netty.
  * It intercepts all the requests, reverse-proxying them to 上游服务器.
  *
  * In the case of HTML it is completely loaded in memory and preprocessed to change URLs to our own local domain.
  * In the case of other files, the file is streamed from the HTTP client to the HTTP server response.
+ *
  */
 fun main(args: Array<String>) {
 
@@ -105,7 +114,7 @@ class HelloCommand(name: String, val callback: (options: HelloCommand) -> Unit) 
     val port: String by option("-p", "--port", help = "port").required()
 }
 
-
+/**这段Kotlin代码定义了一个常量 scriptcontent，其值是一个JavaScript脚本字符串。该脚本尝试在浏览器的全局对象 window 上定义一个名为 pageRedirect 的属性，该属性的值是一个空函数。如果执行过程中出现错误，则会捕获异常并将其打印到控制台。*/
 const val scriptcontent = """
 try {
   Object.defineProperty(window, "pageRedirect", {
@@ -116,7 +125,18 @@ try {
 }
 
 """
+/**
+该Kotlin函数`createApp`用于创建一个Ktor应用配置块，主要功能是代理请求到指定的上游服务器，并处理响应。具体功能如下：
 
+1. **安装压缩插件**：为应用和HTTP客户端安装GZIP压缩支持。
+2. **拦截请求**：在应用调用管道的`Call`阶段拦截所有请求。
+3. **构建新URL**：从原始请求中提取上游服务器的URL，并构建新的目标URL。
+4. **转发请求**：使用HTTP客户端向目标URL发送请求，并复制原始请求的所有头部信息。
+5. **处理响应**：
+   - **HTML响应**：如果响应状态码为200且内容类型为HTML，则解码响应体，插入脚本，并返回处理后的HTML。
+   - **其他响应**：直接将响应内容传递给客户端，包括内容长度、内容类型和其他头部信息。
+
+6. **日志输出**：在关键步骤中打印日志，便于调试。*/
 fun createApp(upstream: String): Application.() -> Unit {
 
     return {
