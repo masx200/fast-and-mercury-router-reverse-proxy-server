@@ -8,6 +8,7 @@ import io.ktor.client.plugins.compression.ContentEncoding
 import io.ktor.client.plugins.compression.compress
 import io.ktor.client.request.request
 import io.ktor.client.request.setBody
+import io.ktor.client.statement.HttpResponse
 import io.ktor.client.statement.bodyAsBytes
 import io.ktor.client.statement.bodyAsChannel
 import io.ktor.http.ContentType
@@ -187,7 +188,10 @@ fun createApp(upstream: String): Application.() -> Unit {
             println(messageheaders)
 
             val toHttpUrltarget = (targetUrl).toHttpUrl()
-            val response = client.request(targetUrl) {
+
+
+            val response: HttpResponse = try {
+                client.request(targetUrl) {
                 method = call.request.httpMethod
 //
 //                headers.appendAll()
@@ -204,6 +208,13 @@ fun createApp(upstream: String): Application.() -> Unit {
 //                println( headers["host"])
                 compress("gzip")
                 setBody(originalRequestBody)
+            }
+            } catch (e: Exception) {
+                println(e.toString())
+                e.printStackTrace()
+                // 捕获异常并返回HTTP 502错误
+                call.respond(HttpStatusCode.BadGateway, "上游服务器返回错误: ${e.toString()}")
+                return@intercept
             }
 //            val response = client.request(upstream + call.request.uri) {
 //                method = call.request.httpMethod
