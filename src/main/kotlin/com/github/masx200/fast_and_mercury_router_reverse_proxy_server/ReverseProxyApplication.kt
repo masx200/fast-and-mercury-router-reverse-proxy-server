@@ -223,7 +223,16 @@ fun createApp(upstream: String): Application.() -> Unit {
     }
 }
 
-
+/**
+ * 将脚本插入到HTML头部
+ *
+ * 此函数的目的是将给定的脚本文本插入到给定HTML文本的头部中，以便在网页加载时首先执行该脚本
+ * 它使用Jsoup库来解析HTML并操作DOM，以确保脚本正确地插入到头部
+ *
+ * @param htmltext 包含HTML内容的字符串，这是原始的HTML文本
+ * @param scripttext 需要插入到HTML头部的脚本内容
+ * @return 返回修改后的HTML字符串，其中包含了插入头部的脚本
+ */
 fun insertscriptintohtmlhead(htmltext: String, scripttext: String): String {
     val doc: Document = Jsoup.parse(htmltext, "", Parser.xmlParser())
     val head = doc.head()
@@ -234,7 +243,13 @@ fun insertscriptintohtmlhead(htmltext: String, scripttext: String): String {
 
     return (doc.html())
 }
-
+/**
+ * Detects the character encoding of a byte array.
+ * Uses the UniversalDetector tool to detect the character encoding of a given byte array.
+ *
+ * @param bytes The byte array whose character encoding is to be detected.
+ * @return Returns the detected character encoding, or null if detection fails.
+ */
 fun detectCharset(bytes: ByteArray): String? {
     val detector = UniversalDetector(null)
 
@@ -248,7 +263,16 @@ fun detectCharset(bytes: ByteArray): String? {
 
     return encoding
 }
-
+/**
+ * Decodes a byte array into a string using the specified character set.
+ *
+ * This function aims to convert a given byte array into a string. If a character set is provided and is not empty,
+ * it will attempt to decode using the provided character set; otherwise, it will default to using UTF-8 encoding for decoding.
+ *
+ * @param bytes The byte array to be decoded, representing the encoded string data.
+ * @param charset The character set to use for decoding, which may be null or empty.
+ * @return The decoded string, or the string obtained using the default UTF-8 encoding if no character set is provided.
+ */
 fun decodeString(bytes: ByteArray, charset: String?): String {
     return if (charset != null && charset.isNotEmpty()) {
         String(bytes, charset(charset))
