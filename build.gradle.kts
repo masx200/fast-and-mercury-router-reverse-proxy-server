@@ -6,7 +6,7 @@ version = "1.0.4"
 
 plugins {
     kotlin("jvm") version "2.0.21"
-    id("io.ktor.plugin") version "3.0.1"
+    id("io.ktor.plugin") version "3.0.2"
     id("org.graalvm.buildtools.native") version "0.10.3"
     id("maven-publish")
 }
