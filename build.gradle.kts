@@ -56,7 +56,7 @@ dependencies {
     implementation("ch.qos.logback:logback-classic:$logback_version")
     implementation("io.ktor:ktor-server-netty-jvm")
     // https://mvnrepository.com/artifact/io.netty/netty-common
-    implementation("io.netty:netty-common:4.1.115.Final")
+    implementation("io.netty:netty-common:4.1.116.Final")
 
     implementation("io.ktor:ktor-client-cio-jvm")
     implementation("com.github.ajalt.clikt:clikt:3.5.0")
