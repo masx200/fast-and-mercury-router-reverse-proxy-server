@@ -46,11 +46,7 @@ repositories {
     mavenCentral()
     gradlePluginPortal()
 }
-dependencyManagement {
-    dependencies {
-        dependency("ch.qos.logback:logback-core:1.5.13")
-    }
-}
+
 configurations {
     implementation {
         resolutionStrategy {
@@ -66,6 +62,15 @@ allprojects {
     }
 }
 
+configurations.all {
+    resolutionStrategy {
+        eachDependency {
+            if (requested.group == "ch.qos.logback" && requested.name == "logback-core") {
+                useVersion("1.5.13")
+            }
+        }
+    }
+}
 
 dependencies {
 implementation("ch.qos.logback:logback-core:1.5.13")
