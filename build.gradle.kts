@@ -46,9 +46,29 @@ repositories {
     mavenCentral()
     gradlePluginPortal()
 }
+dependencyManagement {
+    dependencies {
+        dependency("ch.qos.logback:logback-core:1.5.13")
+    }
+}
+configurations {
+    implementation {
+        resolutionStrategy {
+            force("ch.qos.logback:logback-core:1.5.13")
+        }
+    }
+}
+allprojects {
+    configurations.all {
+        resolutionStrategy {
+            force("ch.qos.logback:logback-core:1.5.13")
+        }
+    }
+}
+
 
 dependencies {
-implementation("ch.qos.logback:logback-core:1.3.15")
+implementation("ch.qos.logback:logback-core:1.5.13")
     // https://mvnrepository.com/artifact/com.squareup.okhttp3/okhttp
     implementation("com.squareup.okhttp3:okhttp:4.12.0")
     implementation("io.ktor:ktor-server-cio-jvm")
