@@ -50,14 +50,14 @@ repositories {
 configurations {
     implementation {
         resolutionStrategy {
-            force("ch.qos.logback:logback-core:1.5.13")
+            force("ch.qos.logback:logback-core:1.5.16")
         }
     }
 }
 allprojects {
     configurations.all {
         resolutionStrategy {
-            force("ch.qos.logback:logback-core:1.5.13")
+            force("ch.qos.logback:logback-core:1.5.16")
         }
     }
 }
@@ -73,7 +73,7 @@ configurations.all {
 }
 
 dependencies {
-implementation("ch.qos.logback:logback-core:1.5.13")
+implementation("ch.qos.logback:logback-core:1.5.16")
     // https://mvnrepository.com/artifact/com.squareup.okhttp3/okhttp
     implementation("com.squareup.okhttp3:okhttp:4.12.0")
     implementation("io.ktor:ktor-server-cio-jvm")
