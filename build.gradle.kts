@@ -123,3 +123,6 @@ graalvmNative {
         }
     }
 }
+tasks.withType<JavaForkOptions> {
+    jvmArgs("--enable-native-access=ALL-UNNAMED", "--add-opens", "java.base/java.lang=ALL-UNNAMED")
+}
