@@ -29,7 +29,7 @@ jobs:
 
       - uses: graalvm/setup-graalvm@v1
         with:
-          java-version: "25.0.0-ea.06"
+          java-version: "25-ea"
           distribution: "graalvm" # See 'Supported distributions' for available options
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
