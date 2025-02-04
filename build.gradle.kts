@@ -126,3 +126,16 @@ graalvmNative {
 // tasks.withType<JavaForkOptions> {
 //     jvmArgs("--enable-native-access=ALL-UNNAMED", "--add-opens", "java.base/java.lang=ALL-UNNAMED")
 // }
+
+tasks.named<JavaExec>("nativeCompile") {
+//    mainClass.set("com.example.Main")
+//    classpath = sourceSets["main"].runtimeClasspath
+    jvmArgs =listOf("--enable-native-access=ALL-UNNAMED", "--add-opens", "java.base/java.lang=ALL-UNNAMED")
+}
+
+
+tasks.named<JavaExec>("build") {
+//    mainClass.set("com.example.Main")
+//    classpath = sourceSets["main"].runtimeClasspath
+    jvmArgs =listOf("--enable-native-access=ALL-UNNAMED", "--add-opens", "java.base/java.lang=ALL-UNNAMED")
+}
