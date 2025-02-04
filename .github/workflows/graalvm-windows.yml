@@ -46,7 +46,7 @@ jobs:
           gradle-version: "8.9"
       #
       - name: Build with Gradle 8.9
-        run: gradle build "-Dorg.gradle.jvmargs=--enable-native-access=ALL-UNNAMED"
+        run: gradle build "-Dorg.gradle.jvmargs=--enable-native-access=ALL-UNNAMED" --stacktrace  --debug --scan
       - name: Run a gradle script
         run: |
           gradle nativeCompile "-Dorg.gradle.jvmargs=--enable-native-access=ALL-UNNAMED"
