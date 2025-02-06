@@ -5,7 +5,7 @@ group = "com.github.masx200"
 version = "1.0.4"
 
 plugins {
-    kotlin("jvm") version "2.0.21"
+    kotlin("jvm") version "2.1.0"
     id("io.ktor.plugin") version "3.0.1"
     id("org.graalvm.buildtools.native") version "0.10.4"
     id("maven-publish")
@@ -139,3 +139,18 @@ graalvmNative {
 ////    classpath = sourceSets["main"].runtimeClasspath
 //    jvmArgs ("--enable-native-access=ALL-UNNAMED", "--add-opens", "java.base/java.lang=ALL-UNNAMED")
 //}
+kotlin {
+    jvmToolchain(21) // you can try other versions here
+}
+
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
+}
+
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
+    kotlinOptions {
+        jvmTarget = "21"
+    }
+}
