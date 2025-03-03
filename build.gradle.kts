@@ -82,7 +82,7 @@ implementation("ch.qos.logback:logback-core:1.5.16")
     implementation("ch.qos.logback:logback-classic:$logback_version")
     implementation("io.ktor:ktor-server-netty-jvm")
     // https://mvnrepository.com/artifact/io.netty/netty-common
-    implementation("io.netty:netty-common:4.1.117.Final")
+    implementation("io.netty:netty-common:4.1.118.Final")
 
     implementation("io.ktor:ktor-client-cio-jvm")
     implementation("com.github.ajalt.clikt:clikt:3.5.0")
